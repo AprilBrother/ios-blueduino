@@ -27,6 +27,9 @@
     self.manager = [[ABArduinoManager alloc] init];
     self.manager.delegate = self;
     [self.manager startScanAprilArduino];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(startRefresh:) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)didReceiveMemoryWarning
@@ -41,7 +44,14 @@
         ABControlViewController *vc = segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         vc.arduino = _devices[indexPath.row];
-    }}
+    }
+}
+
+- (void)startRefresh:(id)sender
+{
+    [self.manager stopScan];
+    [self.manager startScanAprilArduino];
+}
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -61,6 +71,7 @@
 #pragma mark - ABAruduinoDelegate
 - (void)arduino:(ABArduinoManager *)arduino didDiscoverPeripherals:(NSArray *)peripherals
 {
+    [self.refreshControl endRefreshing];
     _devices = peripherals;
     [self.tableView reloadData];
 }

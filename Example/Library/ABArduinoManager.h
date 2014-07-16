@@ -25,6 +25,7 @@
 @property (weak, nonatomic) id<ABArduinoManagerDelegate> delegate;
 
 - (void)startScanAprilArduino;
+- (void)stopScan;
 - (void)connectToPeripheral:(CBPeripheral *)peripheral;
 - (void)cancelConnectToPeripheral:(CBPeripheral *)peripheral;
 

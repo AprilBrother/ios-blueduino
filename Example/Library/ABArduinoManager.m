@@ -50,6 +50,11 @@
     }
 }
 
+- (void)stopScan
+{
+    [_centralManager stopScan];
+}
+
 - (void)connectToPeripheral:(CBPeripheral *)peripheral
 {
     NSDictionary *options = @{};
