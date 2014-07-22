@@ -52,6 +52,7 @@
 
 - (void)stopScan
 {
+    [self.peripheralDic removeAllObjects];
     [_centralManager stopScan];
 }
 

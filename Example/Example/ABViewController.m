@@ -49,6 +49,7 @@
 
 - (void)startRefresh:(id)sender
 {
+    self.devices = nil;
     [self.manager stopScan];
     [self.manager startScanAprilArduino];
 }
