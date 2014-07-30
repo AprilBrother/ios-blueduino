@@ -154,7 +154,7 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
                 memcpy(&buf[len], data, 20);
                 len += data_len;
                 
-                if (len >= 64) {
+                if (len >= 512) {
                     [self.protocol parseData:buf length:len];
                     memset(buf, 0, 512);
                     len = 0;
