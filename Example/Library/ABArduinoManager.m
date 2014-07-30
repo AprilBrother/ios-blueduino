@@ -89,8 +89,7 @@
      advertisementData:(NSDictionary *)advertisementData
                   RSSI:(NSNumber *)RSSI
 {
-    NSLog(@"find peripheral:%@ has prefix:%d", peripheral, [peripheral.name hasPrefix:ABArduinoPrefixName]);
-    
+
     if ([peripheral.name hasPrefix:ABArduinoPrefixName]) {
 
         if (!self.peripheralDic[peripheral]) {

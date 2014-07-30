@@ -51,6 +51,7 @@ uint8_t current_pin = 0;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self clearData];
     [self.arduino connect];
     [self showHUD];
 }
@@ -65,6 +66,19 @@ uint8_t current_pin = 0;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)clearData
+{
+    
+    total_pin_count = 0;
+    memset(pin_mode, 0, 128);
+    memset(pin_cap, 0, 128);
+    memset(pin_digital, 0, 128);
+    memset(pin_analog, 0, 128);
+    memset(pin_pwm, 0, 128);
+    
+    current_pin = 0;
 }
 
 - (void)showHUD
@@ -211,8 +225,9 @@ uint8_t current_pin = 0;
     [cell.sldPWM setTag:pin];
     
     // Pin availability
-    if (pin_cap[pin] == 0x00)
+    if (pin_cap[pin] == 0x00) {
         [cell setHidden:TRUE];
+    }
     
     // Pin mode
     if (pin_mode[pin] == INPUT)

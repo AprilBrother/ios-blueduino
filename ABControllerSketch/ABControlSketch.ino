@@ -126,14 +126,6 @@ byte reportPinAnalogData()
     static byte pin = 0;
     byte report = 0;
     
-    if (!IS_PIN_DIGITAL(pin))
-    {
-        pin++;
-        if (pin >= TOTAL_PINS)
-            pin = 0;
-        return 0;
-    }
-    
     if (pin_mode[pin] == PIN_MODE_ANALOG)
     {
         delay(WAIT_SECONDS);

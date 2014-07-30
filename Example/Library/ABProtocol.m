@@ -53,66 +53,62 @@
     [self write:nsData];
 }
 
--(void)parseData:(NSData *)value
+-(void)parseData:(unsigned char*)data length:(int)lenght
 {
-    unsigned char data[512];
-    NSInteger data_len;
-    
-    data_len = value.length;
-    if (data_len > 512) {
-        data_len = 512;
-    }
-    [value getBytes:data length:data_len];
-    
     uint8_t i = 0;
     
-    while (i < data_len)
+    while (i < lenght)
     {
         uint8_t type = data[i++];
         
         switch (type)
         {
             case 'C': // report total pin count of the board
-                if (i < data_len) {
+                if (i < lenght) {
                     [self.delegate protocolDidReceiveTotalPinCount:data[i++]];
                 }
                 break;
                 
             case 'P': // report pin capability
             {
-                uint8_t pin = data[i++];
-                [self.delegate protocolDidReceivePinCapability:pin value:data[i++]];
+                if (i + 1 < lenght) {
+                    uint8_t pin = data[i++];
+                    [self.delegate protocolDidReceivePinCapability:pin value:data[i++]];
+                }
             }
                 break;
             case 'M': // report pin mode
             {
-                uint8_t pin = data[i++];
-                [self.delegate protocolDidReceivePinMode:pin mode:data[i++]];
+                if (i + 1 < lenght) {
+                    uint8_t pin = data[i++];
+                    [self.delegate protocolDidReceivePinMode:pin mode:data[i++]];
+                }
             }
                 break;
                 
             case 'G': // report pin data
             {
-                uint8_t pin = data[i++];
-                uint8_t mode = data[i++];
-                uint8_t value = data[i++];
-                
-                uint8_t _mode = mode & 0x0F;
-                
-                if ((_mode == INPUT) || (_mode == OUTPUT)) {
-                    [self.delegate protocolDidReceivePinData:pin mode:_mode value:value];
-                }
-                else if (_mode == ANALOG) {
-                    [self.delegate protocolDidReceivePinData:pin mode:_mode value:((mode >> 4) << 8) + value];
-                }
-                else if (_mode == PWM) {
-                    [self.delegate protocolDidReceivePinData:pin mode:_mode value:value];
+                if (i + 2 < lenght) {
+                    uint8_t pin = data[i++];
+                    uint8_t mode = data[i++];
+                    uint8_t value = data[i++];
+                    
+                    uint8_t _mode = mode & 0x0F;
+                    
+                    if ((_mode == INPUT) || (_mode == OUTPUT)) {
+                        [self.delegate protocolDidReceivePinData:pin mode:_mode value:value];
+                    }
+                    else if (_mode == ANALOG) {
+                        [self.delegate protocolDidReceivePinData:pin mode:_mode value:value];
+                    }
+                    else if (_mode == PWM) {
+                        [self.delegate protocolDidReceivePinData:pin mode:_mode value:value];
+                    }
                 }
             }
                 break;
         }
     }
-    memset(data, 0, data_len);
 }
 
 

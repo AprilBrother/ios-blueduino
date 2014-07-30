@@ -32,7 +32,7 @@
 - (void)digitalWrite:(uint8_t)pin value:(uint8_t)value;
 - (void)setPinPWM:(uint8_t)pin pwm:(uint8_t)pwm;
 
--(void)parseData:(NSData *)value;
+-(void)parseData:(unsigned char*)value length:(int)lenght;
 
 
 

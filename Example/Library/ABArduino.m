@@ -139,9 +139,37 @@ didDiscoverCharacteristicsForService:(CBService *)service
 didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
              error:(NSError *)error
 {
-    if ([characteristic.UUID isEqual:CHAR_TX_UUID])
-    {
-        [self.protocol parseData:characteristic.value];
+    unsigned char data[20];
+    
+    static unsigned char buf[512];
+    static int len = 0;
+    NSInteger data_len;
+    
+    if (!error) {
+        if ([characteristic.UUID isEqual:CHAR_TX_UUID]) {
+            data_len = characteristic.value.length;
+            [characteristic.value getBytes:data length:data_len];
+            
+            if (data_len == 20) {
+                memcpy(&buf[len], data, 20);
+                len += data_len;
+                
+                if (len >= 64) {
+                    [self.protocol parseData:buf length:len];
+                    memset(buf, 0, 512);
+                    len = 0;
+                }
+            } else if (data_len < 20) {
+                memcpy(&buf[len], data, data_len);
+                len += data_len;
+                
+                [self.protocol parseData:buf length:len];
+                memset(buf, 0, 512);
+                len = 0;
+            }
+        }
+    } else {
+        NSLog(@"updateValueForCharacteristic failed!");
     }
 
 }
