@@ -22,7 +22,7 @@
 
 @end
 
-@interface ABProtocol : NSObject
+@protocol ABProtocol 
 
 @property (nonatomic, weak) id<ABProtocolDelegate> delegate;
 
@@ -31,7 +31,6 @@
 - (void)setPinMode:(uint8_t)pin mode:(uint8_t)mode;
 - (void)digitalWrite:(uint8_t)pin value:(uint8_t)value;
 - (void)setPinPWM:(uint8_t)pin pwm:(uint8_t)pwm;
-
 - (void)parseData:(unsigned char*)value length:(int)lenght;
 
 

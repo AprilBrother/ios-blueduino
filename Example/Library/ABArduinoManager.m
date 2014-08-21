@@ -21,8 +21,6 @@
 @property (nonatomic, strong) CBCharacteristic *txChar;
 @property (nonatomic, strong) CBCharacteristic *rxChar;
 
-@property (nonatomic, strong) ABProtocol *protocol;
-
 @property (nonatomic) BOOL startScanWhenPowerOn;
 
 @end
@@ -36,7 +34,6 @@
         
         self.peripheralDic = [NSMutableDictionary dictionary];
         
-        self.protocol = [[ABProtocol alloc] init];
     }
     return self;
 }

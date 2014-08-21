@@ -10,6 +10,7 @@
 #import "ABProtocol.h"
 #import "ABArduinoDefine.h"
 #import "ABArduinoManager.h"
+#import "ABCustomProtocol.h"
 
 @implementation ABPin
 
@@ -21,7 +22,7 @@
 @property (nonatomic, strong) CBCharacteristic *rxChar;
 @property (nonatomic, strong) CBCharacteristic *txChar;
 
-@property (nonatomic, strong) ABProtocol *protocol;
+@property (nonatomic, strong) id<ABProtocol> protocol;
 
 @property (nonatomic, strong) NSMutableArray *pins;
 @property (nonatomic, strong) NSMutableArray *pinNumbers;
@@ -33,7 +34,7 @@
 - (id)init
 {
     if (self = [super init]) {
-        self.protocol = [[ABProtocol alloc] init];
+        self.protocol = [[ABCustomProtocol alloc] init];
         self.protocol.delegate = self;
         self.pins = [NSMutableArray array];
         self.pinNumbers = [NSMutableArray array];
