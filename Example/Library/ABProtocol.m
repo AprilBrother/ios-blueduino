@@ -115,7 +115,10 @@
 #pragma mark - private
 - (void)write:(NSData *)data
 {
-    [self.arduino writeData:data];
+    if (self.delegate &&
+        [self.delegate respondsToSelector:@selector(protocolDidPrepareDataToWrite:)]) {
+        [self.delegate protocolDidPrepareDataToWrite:data];
+    }
 }
 
 @end

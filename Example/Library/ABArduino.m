@@ -11,12 +11,20 @@
 #import "ABArduinoDefine.h"
 #import "ABArduinoManager.h"
 
+@implementation ABPin
+
+
+@end
+
 @interface ABArduino ()
 
 @property (nonatomic, strong) CBCharacteristic *rxChar;
 @property (nonatomic, strong) CBCharacteristic *txChar;
 
 @property (nonatomic, strong) ABProtocol *protocol;
+
+@property (nonatomic, strong) NSMutableArray *pins;
+@property (nonatomic, strong) NSMutableArray *pinNumbers;
 
 @end
 
@@ -26,15 +34,16 @@
 {
     if (self = [super init]) {
         self.protocol = [[ABProtocol alloc] init];
-        self.protocol.arduino = self;
+        self.protocol.delegate = self;
+        self.pins = [NSMutableArray array];
+        self.pinNumbers = [NSMutableArray array];
     }
     return self;
 }
 
-- (void)setDelegate:(id<ABArduinoDelegate,ABProtocolDelegate>)delegate
+- (void)setDelegate:(id<ABArduinoDelegate>)delegate
 {
     _delegate = delegate;
-    self.protocol.delegate = delegate;
 }
 
 - (void)setPeripheral:(CBPeripheral *)peripheral
@@ -85,14 +94,20 @@
 - (void)setPinMode:(uint8_t)pin mode:(uint8_t)mode
 {
     [self.protocol setPinMode:pin mode:mode];
+    ABPin *pinObj = [self pin:pin];
+    pinObj.currentMode = mode;
 }
 - (void)digitalWrite:(uint8_t)pin value:(uint8_t)value
 {
     [self.protocol digitalWrite:pin value:value];
+    ABPin *pinObj = [self pin:pin];
+    pinObj.value = value;
 }
 - (void)setPinPWM:(uint8_t)pin pwm:(uint8_t)pwm
 {
     [self.protocol setPinPWM:pin pwm:pwm];
+    ABPin *pinObj = [self pin:pin];
+    pinObj.value = pwm;
 }
 
 #pragma mark - CBPeripheralDelegate
@@ -174,5 +189,83 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
 
 }
 
+- (ABPin *)pin:(NSInteger)pin
+{
+    NSInteger index = [self indexOfPin:pin];
+    ABPin *pinObj = nil;
+    if (index != NSNotFound) {
+        pinObj = [_pins objectAtIndex:index];
+    } else {
+        pinObj = [[ABPin alloc] init];
+        pinObj.pin = pin;
+        [_pinNumbers addObject:@(pin)];
+        [_pins addObject:pinObj];
+    }
+    return pinObj;
+}
+
+- (NSInteger)indexOfPin:(NSInteger)pin
+{
+    return [_pinNumbers indexOfObject:@(pin)];
+}
+
+- (ABPin *)pinAtIndex:(NSInteger)index
+{
+    return _pins[index];
+}
+
+- (NSInteger)totalPinCount
+{
+    return _pins.count;
+}
+
+#pragma mark - ABProtocolDelegate
+- (void)protocolDidReceiveTotalPinCount:(uint8_t)count
+{
+    [self queryPinAll];
+}
+
+- (void)protocolDidReceivePinMode:(uint8_t)pin mode:(uint8_t)mode
+{
+    ABPin *pinObj = [self pin:pin];
+    pinObj.currentMode = mode;
+    if (_delegate && [_delegate respondsToSelector:@selector(arduinoDidUpdateData)]) {
+        [_delegate arduinoDidUpdateData];
+    }
+}
+
+- (void)protocolDidReceivePinData:(uint8_t)pin mode:(uint8_t)mode value:(uint8_t)value
+{
+    ABPin *pinObj = [self pin:pin];
+    pinObj.currentMode = mode;
+    if ((mode == INPUT) || (mode == OUTPUT) || mode == PWM) {
+        pinObj.value = value;
+    } else if (mode == ANALOG) {
+        uint16_t analogValue = ((mode >> 4) << 8);
+        pinObj.value = analogValue + value;
+    }
+    if (_delegate && [_delegate respondsToSelector:@selector(arduinoDidUpdateData)]) {
+        [_delegate arduinoDidUpdateData];
+    }
+}
+
+- (void)protocolDidReceivePinCapability:(uint8_t)pin value:(uint8_t)value
+{
+    ABPin *pinObj = [self pin:pin];
+    pinObj.capability = value;
+    if (_delegate && [_delegate respondsToSelector:@selector(arduinoDidUpdateData)]) {
+        [_delegate arduinoDidUpdateData];
+    }
+}
+
+- (void)protocolDidReceiveCustomData:(uint8_t *)data length:(uint8_t)length
+{
+    
+}
+
+- (void)protocolDidPrepareDataToWrite:(NSData *)data
+{
+    [self writeData:data];
+}
 
 @end

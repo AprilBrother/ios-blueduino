@@ -12,24 +12,37 @@
 @class ABArduino;
 @class ABArduinoManager;
 
-@protocol  ABArduinoDelegate <NSObject>
+@protocol ABArduinoDelegate <NSObject>
 
 - (void)arduino:(ABArduino *)arduino didConnected:(NSError *)error;
 - (void)arduino:(ABArduino *)arduino didDisConnected:(NSError *)error;
+- (void)arduinoDidUpdateData;
 
 @end
 
-@interface ABArduino : NSObject<CBPeripheralDelegate>
+@interface ABPin : NSObject
 
-@property (nonatomic, weak) ABArduinoManager *manager;
+@property (nonatomic) NSInteger pin;
+@property (nonatomic) NSInteger capability;
+@property (nonatomic) NSInteger currentMode;
+@property (nonatomic) NSInteger value;
+
+@end
+
+@interface ABArduino : NSObject<CBPeripheralDelegate, ABProtocolDelegate>
+
 @property (nonatomic, strong) CBPeripheral *peripheral;
-@property (nonatomic, weak) id<ABArduinoDelegate, ABProtocolDelegate> delegate;
+@property (nonatomic, weak) ABArduinoManager *manager;
+@property (nonatomic, weak) id<ABArduinoDelegate> delegate;
 
 - (void)connect;
 - (void)didConnected:(NSError *)error;
 - (void)disconnect;
 - (void)didDisconnected:(NSError *)error;
 - (void)writeData:(NSData *)data;
+- (ABPin *)pinAtIndex:(NSInteger)index;
+- (ABPin *)pin:(NSInteger)pin;
+- (NSInteger)totalPinCount;
 
 #pragma mark - arduino protocol
 - (void)queryTotalPinCount;
