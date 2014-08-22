@@ -28,6 +28,7 @@
 		E20D4CD419752B690017EA40 /* ABPinCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E20D4CD019752B690017EA40 /* ABPinCell.m */; };
 		E20D4CD519752B690017EA40 /* ABControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E20D4CD219752B690017EA40 /* ABControlViewController.m */; };
 		E2E5131219A5C42600621BE6 /* ABCustomProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E2E5131119A5C42600621BE6 /* ABCustomProtocol.m */; };
+		E2E5131519A5C67400621BE6 /* ABFirmataProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = E2E5131419A5C67400621BE6 /* ABFirmataProtocol.m */; };
 		E6C2C329C27A419F85C40F2F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B73466D3CCE4BA29E1A696A /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,8 @@
 		E20D4CD319752B690017EA40 /* ABControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABControlViewController.h; sourceTree = "<group>"; };
 		E2E5131019A5C42600621BE6 /* ABCustomProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABCustomProtocol.h; sourceTree = "<group>"; };
 		E2E5131119A5C42600621BE6 /* ABCustomProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABCustomProtocol.m; sourceTree = "<group>"; };
+		E2E5131319A5C67400621BE6 /* ABFirmataProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABFirmataProtocol.h; sourceTree = "<group>"; };
+		E2E5131419A5C67400621BE6 /* ABFirmataProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABFirmataProtocol.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +200,8 @@
 				E20D4CCB19752B350017EA40 /* ABProtocol.m */,
 				E2E5131019A5C42600621BE6 /* ABCustomProtocol.h */,
 				E2E5131119A5C42600621BE6 /* ABCustomProtocol.m */,
+				E2E5131319A5C67400621BE6 /* ABFirmataProtocol.h */,
+				E2E5131419A5C67400621BE6 /* ABFirmataProtocol.m */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -337,6 +342,7 @@
 				E20D4CD419752B690017EA40 /* ABPinCell.m in Sources */,
 				E20D4CCD19752B350017EA40 /* ABArduinoDefine.m in Sources */,
 				E20D4CCE19752B350017EA40 /* ABArduinoManager.m in Sources */,
+				E2E5131519A5C67400621BE6 /* ABFirmataProtocol.m in Sources */,
 				E2E5131219A5C42600621BE6 /* ABCustomProtocol.m in Sources */,
 				E20D4CCF19752B350017EA40 /* ABProtocol.m in Sources */,
 				E20D4CD519752B690017EA40 /* ABControlViewController.m in Sources */,

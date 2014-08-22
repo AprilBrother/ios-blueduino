@@ -30,8 +30,6 @@ SoftwareSerial mySerial(11, 12); // RX, TX
 #define PIN_TO_ANALOG(p)        ((p) >= 18 ? (p) - 18:((p) >= 8 ? (p):((p) == 6 ? 7 :6)))
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
 
-//byte pinSerial[] = {0,1,2,3,5,6,9,10,4,8,18,19,20,21,7,14,15,16};
-int pinAnalog[] = {A7,A9,A10,A6,A8,A0,A1,A2,A3};
 byte pin_mode[TOTAL_PINS];
 byte pin_state[TOTAL_PINS];
 byte pin_pwm[TOTAL_PINS];
@@ -180,6 +178,9 @@ void loop()
       {
          for (int pin = 0; pin < TOTAL_PINS; pin++)
             {
+                    if (!IS_PIN_DIGITAL(pin)) {
+                      continue;
+                    }
                     reportPinCapability(pin);
                     if ( (pin_mode[pin] == PIN_MODE_INPUT) || (pin_mode[pin] == PIN_MODE_OUTPUT) )
                     {
@@ -234,8 +235,8 @@ void loop()
           pin_mode[pin] = mode;
           if (mode == PIN_MODE_OUTPUT)
           {
-            pinMode(pinSerial[pin], OUTPUT);
-            digitalWrite(pinSerial[pin], HIGH);
+            pinMode(pin, OUTPUT);
+            digitalWrite(pin, HIGH);
             pin_state[pin] = HIGH;
             reportPinDigitalData(pin);
           }

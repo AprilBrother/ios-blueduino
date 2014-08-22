@@ -54,7 +54,7 @@
     [self write:nsData];
 }
 
--(void)parseData:(unsigned char*)data length:(int)lenght
+- (void)parseData:(unsigned char*)data length:(int)lenght
 {
     uint8_t i = 0;
     
@@ -100,7 +100,8 @@
                         [self.delegate protocolDidReceivePinData:pin mode:_mode value:value];
                     }
                     else if (_mode == ANALOG) {
-                        [self.delegate protocolDidReceivePinData:pin mode:_mode value:value];
+                        uint16_t analogValue = ((mode >> 4) << 8);
+                        [self.delegate protocolDidReceivePinData:pin mode:_mode value:value + analogValue];
                     }
                     else if (_mode == PWM) {
                         [self.delegate protocolDidReceivePinData:pin mode:_mode value:value];

@@ -7,10 +7,10 @@
 //
 
 #import "ABArduino.h"
-#import "ABProtocol.h"
 #import "ABArduinoDefine.h"
 #import "ABArduinoManager.h"
 #import "ABCustomProtocol.h"
+#import "ABFirmataProtocol.h"
 
 @implementation ABPin
 
@@ -34,7 +34,7 @@
 - (id)init
 {
     if (self = [super init]) {
-        self.protocol = [[ABCustomProtocol alloc] init];
+        self.protocol = [[ABFirmataProtocol alloc] init];
         self.protocol.delegate = self;
         self.pins = [NSMutableArray array];
         self.pinNumbers = [NSMutableArray array];
@@ -235,15 +235,14 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
     }
 }
 
-- (void)protocolDidReceivePinData:(uint8_t)pin mode:(uint8_t)mode value:(uint8_t)value
+- (void)protocolDidReceivePinData:(uint8_t)pin mode:(uint8_t)mode value:(uint)value
 {
     ABPin *pinObj = [self pin:pin];
     pinObj.currentMode = mode;
     if ((mode == INPUT) || (mode == OUTPUT) || mode == PWM) {
         pinObj.value = value;
     } else if (mode == ANALOG) {
-        uint16_t analogValue = ((mode >> 4) << 8);
-        pinObj.value = analogValue + value;
+        pinObj.value = value;
     }
     if (_delegate && [_delegate respondsToSelector:@selector(arduinoDidUpdateData)]) {
         [_delegate arduinoDidUpdateData];
