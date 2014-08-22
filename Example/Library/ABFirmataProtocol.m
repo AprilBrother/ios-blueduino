@@ -26,7 +26,9 @@
 }
 - (void)setPinMode:(uint8_t)pin mode:(uint8_t)mode
 {
-    
+    uint8_t buf[] = {SET_PIN_MODE, pin, mode};
+    NSData *data = [[NSData alloc] initWithBytes:buf length:3];
+    [self write:data];
 }
 - (void)digitalWrite:(uint8_t)pin value:(uint8_t)value
 {
@@ -72,6 +74,12 @@
     [self write:nsData];
 }
 
+- (void)queryAnalogMapPin
+{
+    uint8_t buf[] = {START_SYSEX, ANALOG_MAPPING_QUERY, END_SYSEX};
+    NSData *data = [[NSData alloc] initWithBytes:buf length:3];
+    [self write:data];
+}
 - (void)parseCommand:(unsigned char *)data length:(int)length
 {
     uint8_t i = 0;
@@ -102,6 +110,7 @@
                 value = data[i++];
                 pin++;
             }
+            [self queryAnalogMapPin];
         }
             break;
         case PIN_STATE_RESPONSE:
@@ -121,6 +130,22 @@
                 [self.delegate protocolDidReceivePinData:pin mode:mode value:value];
             }
             
+        }
+            break;
+            
+        case ANALOG_MAPPING_RESPONSE:
+        {
+            if (!self.delegate || ![self.delegate respondsToSelector:@selector(protocolDidReceiveAnalogMapPin:mapPin:)]) {
+                break;
+            }
+            uint8_t pin = 0;
+            while (i < length) {
+                uint8_t mapPin = data[i++];
+                if (mapPin != 127) {
+                    [self.delegate protocolDidReceiveAnalogMapPin:pin mapPin:mapPin];
+                }
+                pin++;
+            }
         }
             break;
             

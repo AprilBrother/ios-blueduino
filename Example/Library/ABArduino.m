@@ -14,6 +14,13 @@
 
 @implementation ABPin
 
+- (id)init
+{
+    if (self = [super init]) {
+        _analogPin = 127;
+    }
+    return self;
+}
 
 @end
 
@@ -256,6 +263,12 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
     if (_delegate && [_delegate respondsToSelector:@selector(arduinoDidUpdateData)]) {
         [_delegate arduinoDidUpdateData];
     }
+}
+
+- (void)protocolDidReceiveAnalogMapPin:(uint8_t)pin mapPin:(uint8_t)mapPin
+{
+    ABPin *pinObj = [self pin:pin];
+    pinObj.analogPin = mapPin;
 }
 
 - (void)protocolDidReceiveCustomData:(uint8_t *)data length:(uint8_t)length

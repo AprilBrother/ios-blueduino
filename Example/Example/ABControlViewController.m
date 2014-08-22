@@ -96,7 +96,7 @@ uint8_t current_pin = 0;
     NSInteger pin = [sender tag];
     ABPin *pinObj = [self.arduino pin:pin];
 
-    NSString *title = [NSString stringWithFormat:@"Select Pin %d Mode", pinSerial[pin]];
+    NSString *title = [NSString stringWithFormat:@"Select Pin %d Mode", pin];
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:title
                                                        delegate:self
                                               cancelButtonTitle:nil
@@ -213,6 +213,9 @@ uint8_t current_pin = 0;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+        return;
+    }
     NSString *mode_str = [actionSheet buttonTitleAtIndex:buttonIndex];
     uint8_t mode = INPUT;
     

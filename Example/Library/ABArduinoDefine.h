@@ -62,4 +62,3 @@
 #define SYSEX_NON_REALTIME      0x7E // MIDI Reserved for non-realtime messages
 #define SYSEX_REALTIME          0x7F // MIDI Reserved for realtime messages
 
-extern uint8_t pinSerial[];

@@ -18,6 +18,9 @@
 - (void)protocolDidReceivePinData:(uint8_t)pin mode:(uint8_t)mode value:(uint)value;
 - (void)protocolDidPrepareDataToWrite:(NSData *)data;
 
+@optional
+- (void)protocolDidReceiveAnalogMapPin:(uint8_t)pin mapPin:(uint8_t)mapPin;
+
 @end
 
 @protocol ABProtocol 

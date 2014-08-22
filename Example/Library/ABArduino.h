@@ -23,6 +23,7 @@
 @interface ABPin : NSObject
 
 @property (nonatomic) NSInteger pin;
+@property (nonatomic) NSInteger analogPin; // mapping analogpin, or 127
 @property (nonatomic) NSInteger capability;
 @property (nonatomic) NSInteger currentMode;
 @property (nonatomic) NSInteger value;
