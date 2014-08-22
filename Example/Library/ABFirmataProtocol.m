@@ -36,7 +36,9 @@
 }
 - (void)setPinPWM:(uint8_t)pin pwm:(uint8_t)pwm
 {
-    
+    uint8_t buf[] = {START_SYSEX, EXTENDED_ANALOG, pin, pwm, pwm >> 7, END_SYSEX};
+    NSData *data = [[NSData alloc] initWithBytes:buf length:6];
+    [self write:data];
 }
 - (void)parseData:(unsigned char*)data length:(int)lenght
 {
