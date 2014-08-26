@@ -65,7 +65,6 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DuinoCell"];
     ABArduino *arduino = _devices[indexPath.row];
     cell.textLabel.text = arduino.peripheral.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"RSSI:%@", arduino.peripheral.RSSI];
     return cell;
 }
 
