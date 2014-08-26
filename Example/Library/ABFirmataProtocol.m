@@ -66,7 +66,16 @@
 }
 - (void)digitalWrite:(uint8_t)pin value:(uint8_t)value
 {
-    
+    NSInteger port = [self pinToPort:pin];
+    NSInteger portValue = [_portValue[port] intValue];
+    if (value == 0) {
+        portValue &= ~(1 << (pin & 7));
+    } else {
+        portValue |= (1 << (pin & 7));
+    }
+    uint8_t buf[] = {DIGITAL_MESSAGE | port, portValue & 0x7F, (portValue >> 7) & 0x7F};
+    NSData *data = [[NSData alloc] initWithBytes:buf length:3];
+    [self write:data];
 }
 - (void)setPinPWM:(uint8_t)pin pwm:(uint8_t)pwm
 {
