@@ -12,6 +12,11 @@
 
 #define ABArduinoPrefixName @"ZeroBeacon"
 
+#define TOTAL_PINS              22
+#define TOTAL_PORTS             ((TOTAL_PINS + 7) / 8)
+
+#define ANALOG_TO_PIN(p)        ((p) <= 3 ? (p) + 18:((p) >= 8 ? (p):((p) == 7 ? 6 :4)))
+
 #define UNAVAILABLE             0xFF
 #define INPUT                   0x00
 #define OUTPUT                  0x01

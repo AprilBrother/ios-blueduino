@@ -41,8 +41,6 @@
 - (id)init
 {
     if (self = [super init]) {
-        self.protocol = [[ABFirmataProtocol alloc] init];
-        self.protocol.delegate = self;
         self.pins = [NSMutableArray array];
         self.pinNumbers = [NSMutableArray array];
     }
@@ -67,6 +65,8 @@
 
 - (void)didConnected:(NSError *)error
 {
+    self.protocol = [[ABFirmataProtocol alloc] init];
+    self.protocol.delegate = self;
     if (_delegate && [_delegate respondsToSelector:@selector(arduino:didDisConnected:)]) {
         [_delegate arduino:self didConnected:error];
     }
@@ -154,7 +154,7 @@ didDiscoverCharacteristicsForService:(CBService *)service
                 }
             }
         }
-        [_delegate arduino:self didConnected:error];
+        [self didConnected:error];
     }
 }
 

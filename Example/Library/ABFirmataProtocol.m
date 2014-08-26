@@ -9,9 +9,32 @@
 #import "ABFirmataProtocol.h"
 #import "ABArduinoDefine.h"
 
+@interface ABFirmataProtocol ()
+
+@property (nonatomic, strong) NSMutableArray *reportPort;
+@property (nonatomic, strong) NSMutableArray *portConfigInput;
+@property (nonatomic, strong) NSMutableArray *portValue;
+
+@end
+
 @implementation ABFirmataProtocol
 
 @synthesize delegate;
+
+- (id)init
+{
+    if (self = [super init]) {
+        _reportPort = [NSMutableArray array];
+        _portConfigInput = [NSMutableArray array];
+        _portValue = [NSMutableArray array];
+        for (NSInteger index = 0; index < TOTAL_PORTS; index++) {
+            [_reportPort addObject:@(NO)];
+            [_portConfigInput addObject:@(0)];
+            [_portValue addObject:@(0)];
+        }
+    }
+    return self;
+}
 
 - (void)queryTotalPinCount
 {
@@ -29,6 +52,17 @@
     uint8_t buf[] = {SET_PIN_MODE, pin, mode};
     NSData *data = [[NSData alloc] initWithBytes:buf length:3];
     [self write:data];
+    if (mode == INPUT) {
+        [self checkPinReport:pin];
+    }
+    
+    NSInteger portConfg = [_portConfigInput[[self pinToPort:pin]] intValue];
+    if (mode == INPUT) {
+        portConfg |= (1 << (pin & 7));
+    } else {
+        portConfg &= ~(1 << (pin & 7));
+    }
+    _portConfigInput[[self pinToPort:pin]] = @(portConfg);
 }
 - (void)digitalWrite:(uint8_t)pin value:(uint8_t)value
 {
@@ -61,6 +95,24 @@
                 // drop dirty data
             } else {
                 [self parseCommand:&data[startIndex] length:j - startIndex];
+            }
+        } else {
+            uint8_t cmd = command & 0xF0;
+            if (cmd == ANALOG_MESSAGE) {
+                uint8_t analogPin = command & 0x0F;
+                if (i + 1 < lenght) {
+                    int value = data[i++] & 0x7F;
+                    int hight = data[i++] & 0x7f;
+                    value += (hight << 7);
+                    [self.delegate protocolDidReceivePinData:ANALOG_TO_PIN(analogPin) mode:ANALOG value:value];
+                }
+            } else if (cmd == DIGITAL_MESSAGE) {
+                uint8_t port = command & 0x0F;
+                int value = data[i++] & 0x7F;
+                int height = data[i++] & 0x7F;
+                value += height << 7;
+                [self parsePortReport:port value:value];
+
             }
         }
     }
@@ -130,6 +182,9 @@
                     value += hightValue << 14;
                 }
                 [self.delegate protocolDidReceivePinData:pin mode:mode value:value];
+                if (mode == INPUT) {
+                    [self checkPinReport:pin];
+                }
             }
             
         }
@@ -156,6 +211,48 @@
     }
 
 }
+
+- (void)checkPinReport:(NSInteger)pin
+{
+    NSInteger port = [self pinToPort:pin];
+    if (port < _reportPort.count && ![_reportPort[port] boolValue]) {
+        [self reportPort:port];
+        _reportPort[port] = @(YES);
+    }
+}
+
+- (void)reportPort:(NSInteger)port
+{
+    uint8_t buf[] = {REPORT_DIGITAL | port, 1};
+    NSData *data = [[NSData alloc] initWithBytes:buf length:2];
+    [self write:data];
+}
+
+- (NSInteger)pinToPort:(NSInteger)pin
+{
+    return pin/8;
+}
+
+- (void)parsePortReport:(NSInteger)port value:(NSInteger)value
+{
+    NSInteger portConfg = [_portConfigInput[port] intValue];
+    NSInteger portValue = [_portValue[port] intValue];
+    NSInteger pin = port * 8;
+    NSInteger bitmask = 0x1;
+    for (NSInteger count = 0; count < 8; count++) {
+        if (portConfg & bitmask) {
+            if (value & bitmask) {
+                portValue |= (value & bitmask);
+                [self.delegate protocolDidReceivePinData:pin + count mode:INPUT value:1];
+            } else {
+                portValue &= ~(value & bitmask);
+                [self.delegate protocolDidReceivePinData:pin + count mode:INPUT value:0];
+            }
+        }
+        bitmask = bitmask << 1;
+    }
+}
+
 - (void)write:(NSData *)data
 {
     if (self.delegate &&
