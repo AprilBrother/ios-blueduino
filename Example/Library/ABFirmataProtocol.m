@@ -76,6 +76,7 @@
     uint8_t buf[] = {DIGITAL_MESSAGE | port, portValue & 0x7F, (portValue >> 7) & 0x7F};
     NSData *data = [[NSData alloc] initWithBytes:buf length:3];
     [self write:data];
+    _portValue[port] = @(portValue);
 }
 - (void)setPinPWM:(uint8_t)pin pwm:(uint8_t)pwm
 {
