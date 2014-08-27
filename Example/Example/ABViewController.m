@@ -9,6 +9,8 @@
 #import "ABViewController.h"
 #import "ABArduinoManager.h"
 #import "ABControlViewController.h"
+#import <MMDrawerController/MMDrawerBarButtonItem.h>
+#import <MMDrawerController/UIViewController+MMDrawerController.h>
 
 @interface ABViewController () <ABArduinoManagerDelegate>
 
@@ -30,6 +32,9 @@
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(startRefresh:) forControlEvents:UIControlEventValueChanged];
+    
+    MMDrawerBarButtonItem *button = [[MMDrawerBarButtonItem alloc] initWithTarget:self action:@selector(leftButtonAction:)];
+    self.navigationItem.leftBarButtonItem = button;
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,6 +50,11 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         vc.arduino = _devices[indexPath.row];
     }
+}
+
+- (void)leftButtonAction:(id)sender
+{
+    [self.mm_drawerController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
 
 - (void)startRefresh:(id)sender

@@ -7,12 +7,23 @@
 //
 
 #import "ABAppDelegate.h"
+#import <MMDrawerController/MMDrawerController.h>
 
 @implementation ABAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    UIViewController *center = [storyboard instantiateViewControllerWithIdentifier:@"mm_center"];
+    MMDrawerController *drawer = (MMDrawerController *)(self.window.rootViewController);
+    [drawer setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+    [drawer setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+    [drawer setMaximumLeftDrawerWidth:200];
+    [drawer setCenterViewController:center];
+    UIViewController *left = [storyboard instantiateViewControllerWithIdentifier:@"mm_left"];
+    [drawer setLeftDrawerViewController:left];
+    
     return YES;
 }
 							

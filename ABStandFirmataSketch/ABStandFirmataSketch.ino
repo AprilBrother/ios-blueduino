@@ -506,7 +506,6 @@ void outputPort(byte portNumber, byte portValue, byte forceSend)
   portValue = portValue & portConfigInputs[portNumber];
   // only send if the value is different than previously sent
   if(forceSend || previousPINs[portNumber] != portValue) {
-    Serial.println("output port " + String(portNumber, DEC) +" value " + String(portValue, BIN));
     ABFirmata.sendDigitalPort(portNumber, portValue);
     previousPINs[portNumber] = portValue;
   }

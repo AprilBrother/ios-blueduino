@@ -8,25 +8,31 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>1</integer>
+		</dict>
+		<key>Pods-MMDrawerController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>0</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>5EC5F724CE254A5FB87B7A49</key>
+		<key>25F0181C9CCC477E86781D99</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9FEED2A5CE9947BD9846707D</key>
+		<key>2DF4AAE4D9F44C9FB82F1AFB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F14F845119294A7E8940565B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
