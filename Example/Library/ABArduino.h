@@ -40,6 +40,7 @@
 - (void)didConnected:(NSError *)error;
 - (void)disconnect;
 - (void)didDisconnected:(NSError *)error;
+- (void)createProtocolWithClassName:(NSString *)className;
 - (void)writeData:(NSData *)data;
 - (ABPin *)pinAtIndex:(NSInteger)index;
 - (ABPin *)pin:(NSInteger)pin;

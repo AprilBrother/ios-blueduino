@@ -19,7 +19,7 @@
     MMDrawerController *drawer = (MMDrawerController *)(self.window.rootViewController);
     [drawer setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
     [drawer setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
-    [drawer setMaximumLeftDrawerWidth:200];
+    [drawer setMaximumLeftDrawerWidth:250];
     [drawer setCenterViewController:center];
     UIViewController *left = [storyboard instantiateViewControllerWithIdentifier:@"mm_left"];
     [drawer setLeftDrawerViewController:left];

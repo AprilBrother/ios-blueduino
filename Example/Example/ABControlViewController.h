@@ -13,4 +13,6 @@
 
 @property (nonatomic, strong) ABArduino *arduino;
 
+@property (nonatomic, copy) NSString *protcolClassName;
+
 @end

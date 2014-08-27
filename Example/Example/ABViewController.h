@@ -10,4 +10,6 @@
 
 @interface ABViewController : UITableViewController
 
+@property (nonatomic, copy) NSString *protcolClassName;
+
 @end

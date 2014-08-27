@@ -128,6 +128,7 @@ uint8_t current_pin = 0;
 - (void)arduino:(ABArduino *)arduino didConnected:(NSError *)error
 {
     if (!error) {
+        [self.arduino createProtocolWithClassName:self.protcolClassName];
         [self.arduino queryPinAll];
     }
     [self hideHUD];

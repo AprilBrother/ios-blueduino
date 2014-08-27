@@ -65,8 +65,6 @@
 
 - (void)didConnected:(NSError *)error
 {
-    self.protocol = [[ABFirmataProtocol alloc] init];
-    self.protocol.delegate = self;
     if (_delegate && [_delegate respondsToSelector:@selector(arduino:didDisConnected:)]) {
         [_delegate arduino:self didConnected:error];
     }
@@ -81,6 +79,12 @@
     if (_delegate && [_delegate respondsToSelector:@selector(arduino:didDisConnected:)]) {
         [_delegate arduino:self didDisConnected:error];
     }
+}
+
+- (void)createProtocolWithClassName:(NSString *)className
+{
+    self.protocol = [[NSClassFromString(className) alloc] init];
+    self.protocol.delegate = self;
 }
 
 - (void)writeData:(NSData *)data

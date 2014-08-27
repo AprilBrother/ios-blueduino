@@ -35,6 +35,8 @@
     
     MMDrawerBarButtonItem *button = [[MMDrawerBarButtonItem alloc] initWithTarget:self action:@selector(leftButtonAction:)];
     self.navigationItem.leftBarButtonItem = button;
+    
+    self.protcolClassName = @"ABCustomProtocol";
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,6 +51,7 @@
         ABControlViewController *vc = segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         vc.arduino = _devices[indexPath.row];
+        vc.protcolClassName = _protcolClassName;
     }
 }
 
