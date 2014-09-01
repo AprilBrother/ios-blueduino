@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6205" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="XBJ-jD-Cl8">
     <dependencies>
+        <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6198"/>
     </dependencies>
     <scenes>
-        <!--Devices-->
+        <!--Blue Duinos-->
         <scene sceneID="bPs-Xm-ioQ">
             <objects>
                 <tableViewController id="Z2z-r3-R4g" customClass="ABViewController" sceneMemberID="viewController">
@@ -39,7 +40,7 @@
                             <outlet property="delegate" destination="Z2z-r3-R4g" id="QSZ-ZR-10S"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Devices" id="rxL-fe-ihG"/>
+                    <navigationItem key="navigationItem" title="Blue Duinos" id="rxL-fe-ihG"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i42-0p-gq0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -189,7 +190,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sSO-N6-aOI" id="oie-nD-0A8">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Blue Arduino" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rhq-uh-b5J">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Blue Duino" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rhq-uh-b5J">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>

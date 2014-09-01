@@ -8,11 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
-@interface ExampleTests : XCTestCase
+@interface BlueDuinoTests : XCTestCase
 
 @end
 
-@implementation ExampleTests
+@implementation BlueDuinoTests
 
 - (void)setUp
 {
